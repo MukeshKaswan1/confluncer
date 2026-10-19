@@ -21,6 +21,16 @@ or Postgres:
 DATABASE_URL=
 ```
 
+## Test
+```bash
+pytest                                  # automated (uses a 1s delay)
+
+curl -X POST https://confluncer-nine.vercel.app/v1/webhooks/transactions -H 'Content-Type: application/json' \
+  -d '{"transaction_id":"txn_abc123def456","source_account":"acc_user_789","destination_account":"acc_merchant_456","amount":1500,"currency":"INR"}'
+# send it several times, then:
+curl https://confluncer-nine.vercel.app/v1/transactions/txn_abc123def456   # PROCESSING, then PROCESSED after ~30s
+```
+
 ## Technical choices
 - **FastAPI**: async, fast, built-in validation.
 - **Postgres (any cloud, e.g. Neon) via SQLAlchemy**; SQLite fallback for local dev.
